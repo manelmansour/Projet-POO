@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>cabinet+</title>
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Other styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 80px;
+            background-color: rgb(222, 242, 243);
+            box-shadow: 0 5px 15px #7496ca;
+            position: sticky;
+            top: 0;
+            left: 0;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            left: 50px;
+        }
+
+        nav li {
+            list-style: none;
+            padding: 0px 20px;
+        }
+
+        nav li a {
+            font-size: x-large;
+        }
+
+        nav li a:hover {
+            color: rgb(0, 195, 255);
+        }
+        main {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #1c1fce;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1c1fce;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-header {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .user-info {
+            margin-top: 20px;
+        }
+ /* General styling for the appointment management section */
+ .appointments {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .appointments button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .appointments button:hover {
+            background-color: #0056b3;
+        }
+
+        .appointment-list {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .appointment-list ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .appointment-list ul li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .appointment-list h4 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Styling for account management section */
+        .menu {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .menu button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu button:hover {
+            background-color: #c82333;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.avif" width="100px">
+        <nav>
+            <ul>
+                <li><a href="form.html"><i class="fa-sharp fa-solid fa-house"></i></a></li>
+                <li><a href="cart.html"><i class="fa-solid fa-user"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Bienvenue</h2>
+            <button onclick="showOptions()">Utilisateur</button>
+
+            <!-- Choices Section -->
+            <div id="choices" class="form-container">
+                <button onclick="showForm('connect')">Se Connecter</button>
+                <button onclick="showForm('signup')">S'inscrire</button>
+                <button onclick="exit()">Quitter</button>
+            </div>
+
+            <!-- Se Connecter Form -->
+            <div id="connectForm" class="form-container">
+                <h3 class="form-header">Se Connecter</h3>
+                <form id="loginForm" onsubmit="displayUserInfo(event, 'login')">
+                    <input type="text" id="loginUsername" placeholder="Identifiant" required>
+                    <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+                    <button type="submit">Se Connecter</button>
+                </form>
+                <button onclick="showOptions()">Retour</button>
+            </div>
+
+            <!-- S'inscrire Form -->
+            <div id="signupForm" class="form-container">
+                <h3 class="form-header">S'inscrire</h3>
+                <form id="signupFormDetails" onsubmit="displayUserInfo(event, 'signup')">
+                    <input type="text" id="signupUsername" placeholder="Identifiant" required>
+                    <input type="password" id="signupPassword" placeholder="Mot de passe" required>
+                    <select id="role" onchange="showRoleForm()">
+                        <option value="">Choisir un rôle</option>
+                        <option value="doctor">Médecin</option>
+                        <option value="patient">Patient</option>
+                    </select>
+
+                    <!-- Role-specific forms -->
+                    <div id="doctorForm" class="form-container" style="display:none;">
+                        <input type="text" id="doctorFirstName" placeholder="Prénom" required>
+                        <input type="text" id="doctorLastName" placeholder="Nom" required>
+                        <input type="text" id="speciality" placeholder="Spécialité" required>
+                    </div>
+                    <div id="patientForm" class="form-container" style="display:none;">
+                        <input type="text" id="patientFirstName" placeholder="Prénom" required>
+                        <input type="text" id="patientLastName" placeholder="Nom" required>
+                        <input type="date" id="birthdate" placeholder="Date de naissance" required>
+                        <input type="text" id="phone" placeholder="Téléphone" required>
+                        <input type="number" id="weight" placeholder="Poids" required>
+                        <input type="number" id="height" placeholder="Taille" required>
+                        <input type="text" id="chronicDiseases" placeholder="Maladies chroniques" required>
+                        <input type="text" id="medicalHistory" placeholder="Antécédents médicaux" required>
+                    </div>
+
+                    <button type="submit">S'inscrire</button>
+                </form>
+                <button onclick="showOptions()">Retour</button>
+            </div>
+
+            <!-- User Info Display -->
+            <div id="userInfo" class="user-info" style="display: none;">
+                <h3>Vos Informations</h3>
+                <p><strong>Identifiant:</strong> <span id="displayUsername"></span></p>
+                <p><strong>Rôle:</strong> <span id="displayRole"></span></p>
+                <div id="doctorDetails" style="display: none;">
+                    <p><strong>Spécialité:</strong> <span id="displaySpeciality"></span></p>
+                    <div class="appointments">
+                        <button onclick="viewDoctorAppointments()">Consulter mes rendez-vous</button>
+                        <button onclick="addDoctorAppointment()">Ajouter un rendez-vous</button>
+                        <button onclick="modifyDoctorAppointment()">Modifier un rendez-vous</button>
+                    </div>
+                    <div class="appointment-list" id="doctorAppointmentsList"></div>
+                </div>
+                <div id="patientDetails" style="display: none;">
+                    <p><strong>Prénom:</strong> <span id="displayPatientFirstName"></span></p>
+                    <p><strong>Nom:</strong> <span id="displayPatientLastName"></span></p>
+                    <p><strong>Date de Naissance:</strong> <span id="displayBirthdate"></span></p>
+                    <p><strong>Téléphone:</strong> <span id="displayPhone"></span></p>
+                    <p><strong>Poids:</strong> <span id="displayWeight"></span></p>
+                    <p><strong>Taille:</strong> <span id="displayHeight"></span></p>
+                    <p><strong>Maladies Chroniques:</strong> <span id="displayChronicDiseases"></span></p>
+                    <p><strong>Antécédents Médicaux:</strong> <span id="displayMedicalHistory"></span></p>
+                </div>
+
+                <div class="appointments">
+                    <button onclick="viewAppointments()">Consulter mes rendez-vous</button>
+                </div>
+
+                <div class="appointment-list" id="appointmentsList"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for adding or modifying appointment -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Ajouter un rendez-vous</h3>
+            <label for="appointmentDate">Date du rendez-vous:</label>
+            <input type="date" id="appointmentDate" required>
+            <button onclick="saveAppointment()">Sauvegarder</button>
+        </div>
+    </div>
+
+    <script>
+        function showOptions() {
+            document.getElementById('choices').style.display = 'block';
+            document.getElementById('connectForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+        }
+
+        function showForm(formType) {
+            document.getElementById('choices').style.display = 'none';
+            if (formType === 'connect') {
+                document.getElementById('connectForm').style.display = 'block';
+            } else if (formType === 'signup') {
+                document.getElementById('signupForm').style.display = 'block';
+            }
+        }
+
+        function showRoleForm() {
+            const role = document.getElementById('role').value;
+            document.getElementById('doctorForm').style.display = 'none';
+            document.getElementById('patientForm').style.display = 'none';
+
+            if (role === 'doctor') {
+                document.getElementById('doctorForm').style.display = 'block';
+            } else if (role === 'patient') {
+                document.getElementById('patientForm').style.display = 'block';
+            }
+        }
+
+        function displayUserInfo(event, formType) {
+            event.preventDefault();
+            const username = formType === 'login' ? document.getElementById('loginUsername').value : document.getElementById('signupUsername').value;
+            const role = formType === 'login' ? 'Non défini' : document.getElementById('role').value;
+
+            document.getElementById('displayUsername').textContent = username;
+            document.getElementById('displayRole').textContent = role;
+
+            if (role === 'doctor') {
+                document.getElementById('displaySpeciality').textContent = document.getElementById('speciality').value;
+                document.getElementById('doctorDetails').style.display = 'block';
+                document.getElementById('patientDetails').style.display = 'none';
+            } else if (role === 'patient') {
+                document.getElementById('displayPatientFirstName').textContent = document.getElementById('patientFirstName').value;
+                document.getElementById('displayPatientLastName').textContent = document.getElementById('patientLastName').value;
+                document.getElementById('displayBirthdate').textContent = document.getElementById('birthdate').value;
+                document.getElementById('displayPhone').textContent = document.getElementById('phone').value;
+                document.getElementById('displayWeight').textContent = document.getElementById('weight').value;
+                document.getElementById('displayHeight').textContent = document.getElementById('height').value;
+                document.getElementById('displayChronicDiseases').textContent = document.getElementById('chronicDiseases').value;
+                document.getElementById('displayMedicalHistory').textContent = document.getElementById('medicalHistory').value;
+                document.getElementById('patientDetails').style.display = 'block';
+                document.getElementById('doctorDetails').style.display = 'none';
+            }
+
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('connectForm').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'block';
+        }
+
+        // Show the modal for adding a new appointment
+        function addDoctorAppointment() {
+            document.getElementById('modalTitle').textContent = 'Ajouter un rendez-vous';
+            document.getElementById('appointmentModal').style.display = 'block';
+        }
+
+        // Show the modal for modifying an appointment
+        function modifyDoctorAppointment() {
+            document.getElementById('modalTitle').textContent = 'Modifier un rendez-vous';
+            document.getElementById('appointmentModal').style.display = 'block';
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
+        }
+
+        // Save the appointment (example)
+        function saveAppointment() {
+            const appointmentDate = document.getElementById('appointmentDate').value;
+            if (appointmentDate) {
+                alert(`Rendez-vous ajouté/modifié à ${appointmentDate}`);
+                closeModal();
+            } else {
+                alert('Veuillez entrer une date pour le rendez-vous');
+            }
+        }
+    </script>
+</body>
+</html>
